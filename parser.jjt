@@ -1,0 +1,146 @@
+
+options {
+  IGNORE_CASE = true;
+  //FORCE_LA_CHECK = true;
+  LOOKAHEAD = 3;
+  //DEBUG_PARSER = true;
+  //DEBUG_LOOKAHEAD = true;
+  STATIC = false;
+}
+
+
+
+PARSER_BEGIN(Pl1Parser)
+package pl1transpiler;
+
+public class Pl1Parser {
+
+	
+  
+}
+
+PARSER_END(Pl1Parser)
+
+////////////////////////////////////////////////////////////////////////////////
+// Lexical structure
+////////////////////////////////////////////////////////////////////////////////
+
+
+TOKEN :
+{
+  	
+ 	  < DECLARE : "DECLARE">
+	| < DCL : "DCL" > 
+	| < DECIMAL : "DECIMAL" >
+	| < BIN : "BIN" >
+	| < BINARY : "BINARY" >
+	| < CHAR : "CHAR" >
+	| < REAL : "REAL" >
+	| < COMPLEX : "COMPLEX" >
+	| < FLOAT : "FLOAT" >
+	| < UNSIGNED : "UNSIGNED" >
+	| < SIGNED : "SIGNED" >
+	| < FIXED : "FIXED" >
+	
+	| < ATTRIBUTE : ("(" < INTEGER > "," <  INTEGER > ")") >
+	| < SINGLE_ATTRIBUTE : ("(" < INTEGER > ")") >
+ 	| < PL1_WORD: (["a"-"z","A"-"Z"])+ ( (<MINUSCHAR> | "_" )+ (["a"-"z","0"-"9"])+ )* >
+	| < EOL: "\n" >
+	| < SPACE_SEPARATOR : ( <SPACECHAR> | <EOL> )+ >
+	| < SPACECHAR: ( " " | "\t" | "\f" | ";" | "\r" )+ >
+	| < INTEGER : (["0"-"9"])* >
+	| < SCOPE : (["1"-"9"]) >
+	| < MINUSCHAR: "-" >
+	| < PREPROC_COMMENT: "*|" (~["\n","\r"])* >
+	
+	| < COMMA_SEPARATOR : "," <SPACE_SEPARATOR> >
+	| < COMMENT: ( "*>" | "|" ) (~["\n","\r"])* >
+	
+	
+}
+
+
+//void declareIdentifier()
+//: {}
+//{
+//  [ < DECLARE > <SPACE_SEPARATOR > <PL1_WORD > < EOF > ]
+//}
+
+SimpleNode program() #PROGRAM :
+{}
+{
+  (var_declaration())*  {return jjtThis;}
+}
+
+void var_declaration() #VAR :
+{}
+{
+	( < DCL > | < DECLARE > ) ( (< SPACE_SEPARATOR >) scope() | < SPACE_SEPARATOR > )
+		id() (< SPACE_SEPARATOR > type() | < SPACE_SEPARATOR > type() < COMMA_SEPARATOR > |
+		 (< COMMA_SEPARATOR > minor())* )		  
+}
+
+
+void minor() #MINOR :
+{}
+{
+		    ( scope() | < SPACE_SEPARATOR > )
+		id() ( < SPACE_SEPARATOR > type() | < SPACE_SEPARATOR > type() < COMMA_SEPARATOR > | < COMMA_SEPARATOR > )
+}
+
+
+void scope() #SCOPE:
+{}
+{
+	 < INTEGER > < SPACE_SEPARATOR >
+}
+
+void type() #TYPE :
+{}
+{
+	(	  decimal() | character()
+	)
+}
+
+void character() #STRING:
+{}
+ {
+	< CHAR > < SINGLE_ATTRIBUTE >
+ } 
+
+void decimal() #DECIMAL:
+{}
+{
+   < DECIMAL > size()
+}
+
+void binary() #BINARY:
+{}
+{
+	( < BINARY > | < BIN > )	  
+}
+
+void size():
+{}
+{
+ attributes() | attribute()
+}
+
+void attribute() #INT:
+{}
+{
+	< SINGLE_ATTRIBUTE >
+}
+
+void attributes () #DOUBLE:
+{}
+{
+	< ATTRIBUTE >
+}
+
+void id() #ID :
+{Token t;}
+{
+  t=<PL1_WORD> {jjtThis.value = t.image;}
+}
+
