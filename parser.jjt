@@ -69,7 +69,7 @@ TOKEN :
 SimpleNode program() #PROGRAM :
 {}
 {
-  (var_declaration())*  {return jjtThis;}
+  (var_declaration()< SPACE_SEPARATOR > )*  {return jjtThis;}
 }
 
 void var_declaration() #VAR :
@@ -77,16 +77,17 @@ void var_declaration() #VAR :
 {
 	( < DCL > | < DECLARE > ) ( (< SPACE_SEPARATOR >) scope() | < SPACE_SEPARATOR > )
 		id() (< SPACE_SEPARATOR > type() | < SPACE_SEPARATOR > type() < COMMA_SEPARATOR > |
-		 (< COMMA_SEPARATOR > minor())* )		  
+		 (< COMMA_SEPARATOR > minor())* )		  
 }
 
 
 void minor() #MINOR :
 {}
 {
-		    ( scope() | < SPACE_SEPARATOR > )
-		id() ( < SPACE_SEPARATOR > type() | < SPACE_SEPARATOR > type() < COMMA_SEPARATOR > | < COMMA_SEPARATOR > )
+		    ( scope() | < SPACE_SEPARATOR > )
+		id() ( < SPACE_SEPARATOR > type() | < SPACE_SEPARATOR > type() < COMMA_SEPARATOR > | (< COMMA_SEPARATOR > minor())*)
 }
+
 
 
 void scope() #SCOPE:
@@ -98,7 +99,7 @@ void scope() #SCOPE:
 void type() #TYPE :
 {}
 {
-	(	  decimal() | character()
+	(	  decimal() | character() | binary()
 	)
 }
 
@@ -117,7 +118,7 @@ void decimal() #DECIMAL:
 void binary() #BINARY:
 {}
 {
-	( < BINARY > | < BIN > )	  
+	( < BINARY > | < BIN > ) size() 	  
 }
 
 void size():

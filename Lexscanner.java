@@ -48,6 +48,7 @@ public class Lexscanner {
 	int start = 0;
 	int lexical_value;
 	int letterCounter;
+	int scope = 0;
 	
 	String token;
 	ArrayList<Character> symbols = new ArrayList<Character>();
@@ -67,6 +68,7 @@ public class Lexscanner {
 		symbols.clear();
 		state = 0;
 		letterCounter = 0;
+		
 		
 		c = next;
 		
@@ -108,7 +110,7 @@ public class Lexscanner {
 				
 				
 				else if(letterCounter == next.length()) {
-					this.install_id(toToken(symbols));
+					this.install_id(toToken(symbols), scope);
 					return toToken(symbols);
 				}
 				
@@ -123,7 +125,7 @@ public class Lexscanner {
 					System.out.println("Here 12");
 					if(Character.isLetter(c.charAt(0))){
 						String adder = toToken(symbols);
-						this.install_id(adder);
+						this.install_id(adder, scope);
 						return toToken(symbols);
 					}
 					else {
@@ -139,7 +141,7 @@ public class Lexscanner {
 					
 					letterCounter++;
 					if(letterCounter == next.length()) {
-						this.install_id(toToken(symbols));
+						this.install_id(toToken(symbols), scope);
 						return toToken(symbols);
 					}
 					
@@ -152,7 +154,7 @@ public class Lexscanner {
 				}
 				
 				else if(c.charAt(letterCounter) == ',') {
-					this.install_id(toToken(symbols));
+					this.install_id(toToken(symbols), scope);
 						return toToken(symbols);
 					
 					
@@ -161,7 +163,7 @@ public class Lexscanner {
 				
 				else if(letterCounter == next.length()) {
 					System.out.println("Here 15");
-					this.install_id(toToken(symbols));
+					this.install_id(toToken(symbols), scope);
 					return toToken(symbols);
 				}
 				else if(c.charAt(letterCounter) == '(') {
@@ -178,7 +180,7 @@ public class Lexscanner {
 				   c.charAt(letterCounter)  == '\n') {
 					System.out.println("Here 11");
 					if(Character.isLetter(c.charAt(0))){
-						this.install_id(toToken(symbols));
+						this.install_id(toToken(symbols), scope);
 					}
 					return toToken(symbols);
 				}
@@ -189,6 +191,7 @@ public class Lexscanner {
 					}
 					else {
 					System.out.println("Here 6");
+					scope = Character.getNumericValue(c.charAt(letterCounter));
 					this.symbols.add((char) c.charAt(letterCounter));
 					letterCounter++;
 					state = 2;
@@ -456,7 +459,7 @@ public class Lexscanner {
 			sendToken(currentToken);
 		}
 		else {
-			install_id(currentToken);
+			install_id(currentToken, this.scope);
 			sendToken(currentToken);
 		}
 		
@@ -491,7 +494,7 @@ public class Lexscanner {
 		return 99;	
 	}
 
-	void install_id(String id) {
+	void install_id(String id, int scope) {
 		
 		/* Eintrag eines Lexems in die Symboltabelle */
 		if(st.getBySymbol(id) != null){
@@ -499,7 +502,7 @@ public class Lexscanner {
 			return;
 		}
 		
-			String tmp[] = {id, "id"};
+			String tmp[] = {id, Integer.toString(scope), "id"};
 			
 			try {
 				st.insert(tmp);

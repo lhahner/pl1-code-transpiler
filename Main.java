@@ -56,7 +56,11 @@ public class Main {
 		}
 		st.printAll();
 		root.dump(" ");
-		System.out.println(jP.createVarExpression(root));
+		
+		jP.createExpression(root);
+		
+		System.out.println(jP.concatExpression());
+		
 		}
 		catch(Exception ioe) {
 			System.out.println(ioe);

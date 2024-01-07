@@ -81,12 +81,12 @@ public class Symbol_table {
 	}
 	
 	//can only be called when the scanner was executed once
-	public static ArrayList<String> getAllIdentifier() {
-		ArrayList<String> identfiertList = new ArrayList<String>();
+	public static ArrayList<String []> getAllIdentifier() {
+		ArrayList<String []> identfiertList = new ArrayList<String []>();
 		for(int i = 1; i<=hashtable.size(); i++) {
 		
-			if(getById(i)[1].equals("id")) {
-				identfiertList.add(getById(i)[0]);
+			if(getById(i)[getById(i).length-1].equals("id")) {
+				identfiertList.add(getById(i));
 			}
 			else {
 				continue;
