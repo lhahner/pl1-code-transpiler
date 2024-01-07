@@ -5,10 +5,13 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import pl1transpiler.Pl1Parser.Node;
+import pl1transpiler.Pl1Parser.SimpleNode;
+
 public class JavaParser {
 	
 	static ArrayList<String> java_expression = new ArrayList<String>();
-	Symbol_table symboltable = new Symbol_table();
+	Symbol symboltable = new Symbol();
 	static int iterationCounter = 0;
 	String Major;
 	
@@ -186,14 +189,14 @@ public class JavaParser {
 	
 	public static int getScope() {
 		
-		Symbol_table symboltable = new Symbol_table();
+		Symbol symboltable = new Symbol();
 		int scope = Integer.parseInt(symboltable.getAllIdentifier().get(iterationCounter)[1]);
 		
 		return scope;
 	}
 	
 	public static int getNextScope() {
-		Symbol_table symboltable = new Symbol_table();
+		Symbol symboltable = new Symbol();
 		
 		if(symboltable.getAllIdentifier().get(iterationCounter+1) != null) {
 			
@@ -207,7 +210,7 @@ public class JavaParser {
 	}
 	
 	public String getId() {
-		Symbol_table symboltable = new Symbol_table();
+		Symbol symboltable = new Symbol();
 		String id = symboltable.getAllIdentifier().get(iterationCounter)[0];
 		
 		return id;
@@ -215,7 +218,7 @@ public class JavaParser {
 	
 	public static String addIdentifier(){
 			String id;
-			Symbol_table symboltable = new Symbol_table();
+			Symbol symboltable = new Symbol();
 			id = symboltable.getAllIdentifier().get(iterationCounter)[0];
 			java_expression.add(symboltable.getAllIdentifier().get(iterationCounter)[0]);
 			iterationCounter++;

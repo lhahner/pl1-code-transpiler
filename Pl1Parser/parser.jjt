@@ -11,7 +11,7 @@ options {
 
 
 PARSER_BEGIN(Pl1Parser)
-package pl1transpiler;
+package pl1transpiler.Pl1Parser;
 
 public class Pl1Parser {
 

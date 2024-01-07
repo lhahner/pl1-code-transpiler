@@ -39,9 +39,9 @@ Abbildungsketten
 <Liste> ::= A...Z
  ****************************************/
 
-public class Lexscanner {
+public class Lexer {
 	
-	public static Symbol_table st = new Symbol_table();
+	public static Symbol st = new Symbol();
 	Scanner lexical_reader = readFile();
 	
 	int state = 0;	
@@ -55,7 +55,7 @@ public class Lexscanner {
 	String num;
 	String c;
 	
-	public Lexscanner() {
+	public Lexer() {
 		
 	}
 	

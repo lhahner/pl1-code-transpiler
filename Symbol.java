@@ -4,9 +4,9 @@ import java.util.Hashtable;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-public class Symbol_table {
+public class Symbol {
 	
-	public Symbol_table () {
+	public Symbol () {
 		INIT();
 	}
 	/****

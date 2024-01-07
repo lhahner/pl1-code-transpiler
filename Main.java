@@ -7,18 +7,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import pl1transpiler.Pl1Parser.Pl1Parser;
+import pl1transpiler.Pl1Parser.SimpleNode;
+
 public class Main {
 	static String content = "";
 	static String token = "";
 	static int DECLARE = 1;
 	static ArrayList<String> pl1_parsetree = new ArrayList<String>();  
 	static JavaParser jP = new JavaParser();
-	static Symbol_table st = new Symbol_table();
+	static Symbol st = new Symbol();
 	
 	
 	public static void main(String[] args) {
 		
-		Lexscanner lex = new Lexscanner();
+		Lexer lex = new Lexer();
 		
 		
 		Scanner sc = lex.readFile();
